@@ -35,6 +35,7 @@ class VirtualBoard(Board):
     LOW_SENSOR_PIN = 19
     FLOW_PIN = 13
     PUMP_PIN = 15
+    TEST_PIN = 36
 
     LOW_WATER_LEVEL = 70
     HIGH_WATER_LEVEL = 80
@@ -96,8 +97,8 @@ class VirtualBoard(Board):
         GPIO.output(self.PUMP_PIN, GPIO.HIGH)
 
         # reset to input (from PLC) after initializing pin values
-        GPIO.setup(self.FLOW_PIN, GPIO.IN)
-        GPIO.setup(self.PUMP_PIN, GPIO.IN)
+        GPIO.setup(self.FLOW_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.PUMP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
     def update_hardware_state(self):
