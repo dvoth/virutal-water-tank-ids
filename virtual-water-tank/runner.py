@@ -59,14 +59,11 @@ class Runner(object):
         self.server.route("/schedule", method="GET", callback=self.get_schedule)
         self.server.route("/schedule", method="PUT", callback=self.put_schedule)
 
-        GPIO.setup(self.board.FLOW_PIN, GPIO.IN)
+        GPIO.setup(self.board.FLOW_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.add_event_detect(self.board.FLOW_PIN, GPIO.BOTH, callback=self.flow_changed, bouncetime=300)
 
-        GPIO.setup(self.board.PUMP_PIN, GPIO.IN)
+        GPIO.setup(self.board.PUMP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.add_event_detect(self.board.PUMP_PIN, GPIO.BOTH, callback=self.pump_changed, bouncetime=300) 
-
-        GPIO.setup(self.board.TEST_PIN, GPIO.IN)
-        GPIO.add_event_detect(self.board.TEST_PIN, GPIO.BOTH, callback=self.test_change, bouncetime=300)
 
         self.monitor_water_level_job = SCHEDULER.add_job(
             self.monitor_water_level,
@@ -200,12 +197,6 @@ class Runner(object):
             self.get_on()
         else:
             self.get_off()
-
-    def test_change(self, channel):
-        if (GPIO.input(self.board.TEST_PIN)):
-            print("yeet test")
-        else:
-            print("ohhh noo")
 
     def get_schedule(self):
 
